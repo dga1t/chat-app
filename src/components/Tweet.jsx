@@ -4,12 +4,12 @@ import { Card, Typography } from '@material-ui/core';
 
 const Tweet = (props) => {
 
-  const { text } = props;
-  const d = new Date();
+  const { id, text } = props;
+  const tweetTime = new Date(parseInt(id))
 
   return (
   <Card>
-    <Typography>{"Joe Rogan"} {d.toISOString()}</Typography>
+    <Typography>{"Joe Rogan"} {tweetTime.toISOString()}</Typography>
     <Typography>{text}</Typography>
   </Card>
   )

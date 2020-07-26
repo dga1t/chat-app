@@ -8,15 +8,12 @@ class MainPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tweets: []
+      tweets: JSON.parse(localStorage.getItem( 'tweets' ))
     }
   }
 
-  componentDidMount() {
-    localStorage.tweets = JSON.stringify(this.state.tweets);
-  }
-
-  handleOnNewTweet(newTweet) {
+  handleOnNewTweet = newTweet => {
+    localStorage.setItem('tweets', JSON.stringify([newTweet, ...this.state.tweets]));
     this.setState((state) => {
       return {
         tweets: [newTweet, ...state.tweets]
