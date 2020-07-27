@@ -16,8 +16,9 @@ class TweetForm extends React.Component {
   handleOnSubmit(event) {
     event.preventDefault();
     this.props.onNewTweet({
-      id: Date.now() + '',
-      text: this.state.tweetText
+      content: this.state.tweetText,
+      userName: "dflow088",
+      date: new Date().toISOString()
     });
     this.setState({ tweetText: '' })
   }

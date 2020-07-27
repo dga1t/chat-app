@@ -6,14 +6,15 @@ import { Container } from '@material-ui/core';
 const TweetsList = (props) => {
 
   const { tweets } = props;
-  
-  const tweetsList = tweets.map(tweet => {
-    return <Tweet key={tweet.id} text={tweet.text} id={tweet.id}/>
-  })
 
   return (
     <Container disableGutters={true}>
-      {tweetsList}
+      {tweets.map(tweet =>
+              <Tweet
+                key={tweet.id}
+                tweet={tweet}
+              />
+            )}
     </Container>
   )
 }
