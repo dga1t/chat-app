@@ -1,5 +1,7 @@
 import React from 'react';
-import { TextField, Button } from '@material-ui/core';
+
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 class TweetForm extends React.Component {
   constructor(props) {
@@ -17,7 +19,7 @@ class TweetForm extends React.Component {
     event.preventDefault();
     this.props.onNewTweet({
       content: this.state.tweetText,
-      userName: "dflow088",
+      userName: JSON.parse(localStorage.getItem( 'userName' )),
       date: new Date().toISOString()
     });
     this.setState({ tweetText: '' })
@@ -47,8 +49,7 @@ class TweetForm extends React.Component {
           inputProps={{
             maxLength: 140,
           }}
-        />
-                
+        />       
       </form>
     )
   }

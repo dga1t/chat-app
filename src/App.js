@@ -10,9 +10,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="sm">
-        <MainPage />
-      </Container>
+      <MainPage />
     </ThemeProvider>
   );
 }
