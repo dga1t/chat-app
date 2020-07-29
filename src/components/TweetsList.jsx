@@ -1,22 +1,25 @@
 import React from 'react';
 import Tweet from './Tweet'
+import MyContext from '../context';
 
 import Container from '@material-ui/core/Container';
 
 
-const TweetsList = (props) => {
-
-  const { tweets } = props;
+const TweetsList = () => {
 
   return (
-    <Container disableGutters={true}>
-      {tweets.map(tweet =>
-        <Tweet
-          key={tweet.id}
-          tweet={tweet}
-        />
+    <MyContext.Consumer>
+      {({ tweets }) => (
+        <Container disableGutters={true}>
+          {tweets.map(tweet =>
+            <Tweet
+              key={tweet.id}
+              tweet={tweet}
+            />
+          )}
+        </Container>
       )}
-    </Container>
+    </MyContext.Consumer>
   )
 }
 

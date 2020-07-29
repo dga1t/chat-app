@@ -3,6 +3,7 @@ import TweetForm from './TweetForm';
 import TweetsList from './TweetsList';
 import User from './UserPage';
 import { getTweets, addTweet } from '../lib/api';
+import MyContext from '../context';
 
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
@@ -22,12 +23,13 @@ class MainPage extends React.Component {
     super(props);
     this.state = {
       tweets: [],
-      loading: false
+      loading: false,
+      onNewTweet: newTweet => this.handleOnNewTweet(newTweet)
     }
   }
 
   componentDidMount() {
-    this.fetchTweets();
+    this.fetchTweets().then();
   }
 
   async fetchTweets() {
@@ -45,24 +47,26 @@ class MainPage extends React.Component {
     const { loading } = this.state;
     return (
       <Router>
-        <Container maxWidth="md">
-          <AppBar position="static">
-            <Typography variant="h6" color="inherit"><Link to="/">Home</Link></Typography>
-            <Typography variant="h6" color="inherit"><Link to="/user">Profile</Link></Typography>
-          </AppBar>
-          <Container maxWidth="sm">
-            <Switch>
-              <Route exact path="/">
-                <TweetForm onNewTweet={(newTweet) => this.handleOnNewTweet(newTweet)} />
-                { loading && <CircularProgress />}
-                <TweetsList tweets={this.state.tweets}/>
-              </Route>
-              <Route path="/user">
-                <User />
-              </Route>
-            </Switch>
+        <MyContext.Provider value={this.state}>
+          <Container maxWidth="md">
+            <AppBar position="static">
+              <Typography variant="h6" color="inherit"><Link to="/">Home</Link></Typography>
+              <Typography variant="h6" color="inherit"><Link to="/user">Profile</Link></Typography>
+            </AppBar>
+            <Container maxWidth="sm">
+              <Switch>
+                <Route exact path="/">
+                  <TweetForm />
+                  { loading && <CircularProgress />}
+                  <TweetsList />
+                </Route>
+                <Route path="/user">
+                  <User />
+                </Route>
+              </Switch>
+            </Container>
           </Container>
-        </Container>
+        </MyContext.Provider>
       </Router>
     )
   }

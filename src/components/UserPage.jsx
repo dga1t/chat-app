@@ -20,7 +20,7 @@ class User extends React.Component {
 
   handleOnUsernameSave(event) {
     event.preventDefault();
-    localStorage.setItem('userName', JSON.stringify(this.state.userName))
+    localStorage.setItem('userName', JSON.stringify(this.state.userName));
   }
 
   render() {
