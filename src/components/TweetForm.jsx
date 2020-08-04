@@ -3,6 +3,17 @@ import MyContext from '../context';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
+
+
+export const useStyles = theme => ({
+  inputForm: {
+    marginTop: 15,
+    marginBottom: 10
+  }
+});
+
 
 class TweetForm extends React.Component {
   constructor(props) {
@@ -29,11 +40,14 @@ class TweetForm extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
       <MyContext.Consumer>
         {({ onSubmit }) => (
           <form onSubmit={(event) => this.handleOnSubmit(event)}>
             <TextField
+              className={classes.inputForm}
               id="outlined-multiline-static"
               label="Enter ur tweet"
               multiline
@@ -62,4 +76,8 @@ class TweetForm extends React.Component {
   }
 }
 
-export default TweetForm
+TweetForm.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(useStyles)(TweetForm);

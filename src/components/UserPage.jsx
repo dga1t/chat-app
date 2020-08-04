@@ -1,9 +1,22 @@
 import React from 'react';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import firebaseui from 'react-firebaseui'
+import firebase from 'firebase';
 
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+
+//const ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+const uiConfig = {
+  signInFlow: 'popup',
+  signInSuccessUrl: '/signedIn',
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+  ]
+};
 
 class User extends React.Component {
   constructor(props) {
@@ -26,10 +39,16 @@ class User extends React.Component {
   render() {
     return(
       <Container>
-        <Typography>Profile</Typography>
+        <Typography>Login</Typography>
         <form onSubmit={(event) => this.handleOnUsernameSave(event)}>
           <TextField 
           label="User name"
+          required
+          value={this.state.value}
+          onChange={this.handleOnUsernameChange}
+          />
+          <TextField 
+          label="Password"
           required
           value={this.state.value}
           onChange={this.handleOnUsernameChange}
@@ -38,8 +57,9 @@ class User extends React.Component {
             variant="contained" 
             color="primary"
             type="submit"
-          >Save</Button>
+          >Login</Button>
         </form>
+        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
       </Container>
     )
   }

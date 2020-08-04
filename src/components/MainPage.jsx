@@ -2,13 +2,17 @@ import React from 'react';
 import TweetForm from './TweetForm';
 import TweetsList from './TweetsList';
 import User from './UserPage';
-import { getTweets, addTweet } from '../lib/api';
 import MyContext from '../context';
+//import { getTweets, addTweet } from '../lib/api';
+
+import firebase from 'firebase';
 
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
+import { Button } from '@material-ui/core';
 
 import { 
   BrowserRouter as Router,
@@ -17,8 +21,13 @@ import {
   Link
 } from 'react-router-dom';
 
+export const useStyles = theme => ({
+  topbar: {
+    borderRadius: 5,
+  },
+});
 
-class MainPage extends React.Component {
+export class MainPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,29 +38,40 @@ class MainPage extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchTweets().then();
+    this.fetchTweets();
   }
 
-  async fetchTweets() {
+  fetchTweets() {
     this.setState({ loading: true });
-    const response = await getTweets();
-    const tweetsFromServer = response.data.tweets;
-    this.setState({tweets: tweetsFromServer, loading: false });
+    firebase.firestore().collection("tweets").get().then(querySnapshot => {
+      const fireTweets = querySnapshot.docs.map(doc => doc.data());
+      this.setState({tweets: fireTweets, loading: false });
+    })
   }
 
-  async handleOnNewTweet(newTweet) {
-    const response = await addTweet(newTweet);
+  handleOnNewTweet(newTweet) {
+    firebase.firestore().collection("tweets").add(newTweet)
+    .then(function(docRef) {
+      console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+      console.error("Error adding document: ", error);
+    });
   }
 
   render() {
     const { loading } = this.state;
+    const { classes } = this.props;
+  
     return (
       <Router>
         <MyContext.Provider value={this.state}>
           <Container maxWidth="md">
-            <AppBar position="static">
-              <Typography variant="h6" color="inherit"><Link to="/">Home</Link></Typography>
-              <Typography variant="h6" color="inherit"><Link to="/user">Profile</Link></Typography>
+            <AppBar position="static" className={classes.topbar}>
+              <Container>
+                <Button component={Link} to={'/'} color="white">Home</Button>
+                <Button component={Link} to={'/user'} color="white">Login</Button>
+              </Container>
             </AppBar>
             <Container maxWidth="sm">
               <Switch>
@@ -72,4 +92,8 @@ class MainPage extends React.Component {
   }
 }
 
-export default MainPage
+MainPage.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(useStyles)(MainPage);

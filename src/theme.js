@@ -4,6 +4,7 @@ const theme = createMuiTheme({
   palette: {
     type: 'dark',
   },
+  
 })
 
 export default theme
