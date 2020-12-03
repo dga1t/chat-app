@@ -11,12 +11,7 @@ const TweetsList = () => {
     <MyContext.Consumer>
       {({ tweets }) => (
         <Container disableGutters={true}>
-          {tweets.map(tweet =>
-            <Tweet
-              key={tweet.id}
-              tweet={tweet}
-            />
-          )}
+          {tweets.map(tweet => <Tweet key={tweet.id} tweet={tweet} />)}
         </Container>
       )}
     </MyContext.Consumer>
