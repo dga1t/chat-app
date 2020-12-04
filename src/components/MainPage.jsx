@@ -6,6 +6,7 @@ import MyContext from '../context';
 //import { getTweets, addTweet } from '../lib/api';
 
 import firebase from 'firebase';
+import 'firebase/firestore';
 
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
@@ -27,6 +28,17 @@ export const useStyles = theme => ({
   },
 });
 
+firebase.initializeApp({
+  apiKey: "AIzaSyC5PUn8wCin7xFwhZx8aRVDPhCYLqWNrac",
+  authDomain: "chatapp-685f0.firebaseapp.com",
+  projectId: "chatapp-685f0",
+  storageBucket: "chatapp-685f0.appspot.com",
+  messagingSenderId: "567476716691",
+  appId: "1:567476716691:web:30c2d1ba9821cc80a63966"
+});
+
+const db = firebase.firestore();
+
 export class MainPage extends React.Component {
   constructor(props) {
     super(props);
@@ -43,14 +55,16 @@ export class MainPage extends React.Component {
 
   fetchTweets() {
     this.setState({ loading: true });
-    firebase.firestore().collection("tweets").get().then(querySnapshot => {
-      const fireTweets = querySnapshot.docs.map(doc => doc.data());
-      this.setState({tweets: fireTweets, loading: false });
+    db.collection("tweets").get().then(querySnapshot => {
+      console.log(querySnapshot);
+      const twts = querySnapshot.docs.map(doc => doc.data());
+      console.log(twts);
+      this.setState({tweets: twts, loading: false });
     })
   }
 
   handleOnNewTweet(newTweet) {
-    firebase.firestore().collection("tweets").add(newTweet)
+    db.collection("tweets").add(newTweet)
     .then(function(docRef) {
       console.log("Document written with ID: ", docRef.id);
     })

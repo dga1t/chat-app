@@ -6,14 +6,12 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 
-
 export const useStyles = theme => ({
   inputForm: {
     marginTop: 15,
     marginBottom: 10
   }
 });
-
 
 class TweetForm extends React.Component {
   constructor(props) {
